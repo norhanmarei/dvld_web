@@ -1,3 +1,8 @@
+# ==== Environment files ====
+**/.env
+**/.env.*
+!.env.sample
+
 # ==== .NET Core (all projects) ====
 **/bin/
 **/obj/
@@ -16,7 +21,6 @@ frontend/dvld-frontend/node_modules/
 frontend/dvld-frontend/dist/
 frontend/dvld-frontend/build/
 frontend/dvld-frontend/output.css
-frontend/dvld-frontend/.env
 
 # ==== Logs ====
 *.log
