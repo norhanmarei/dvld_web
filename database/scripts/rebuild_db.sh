@@ -17,7 +17,7 @@ USER=$3
 PASS=$4
 DB_NAME=$5
 
-SQLCMD="sqlcmd -S ${SERVER},${PORT} -U ${USER} -P ${PASS} -d ${DB_NAME}"
+SQLCMD="sqlcmd -b -S ${SERVER},${PORT} -U ${USER} -P ${PASS} -d ${DB_NAME}"
 
 echo "🛠  Rebuilding database: $DB_NAME on $SERVER:$PORT"
 
