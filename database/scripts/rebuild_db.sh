@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Usage:
-#   ./rebuild_db.sh <server> <port> <user> <password> <database>
-# Example:
-#   ./rebuild_db.sh localhost 1433 sa "YourStrong!Passw0rd" dvld_dev
-
 if [ "$#" -ne 5 ]; then
   echo "Usage: $0 <server> <port> <user> <password> <database>"
   exit 1
@@ -17,9 +12,12 @@ USER=$3
 PASS=$4
 DB_NAME=$5
 
-SQLCMD="sqlcmd -b -S ${SERVER},${PORT} -U ${USER} -P ${PASS} -d ${DB_NAME}"
+# Connect to master DB to drop and create target DB
+echo "🛠  Dropping and recreating database: $DB_NAME on $SERVER:$PORT"
+sqlcmd -b -S ${SERVER},${PORT} -U ${USER} -P ${PASS} -d master -i ../schema/000_database.sql -v DatabaseName="$DB_NAME" -N -C
 
-echo "🛠  Rebuilding database: $DB_NAME on $SERVER:$PORT"
+# Now connect to the newly created DB for schema and data
+SQLCMD="sqlcmd -b -S ${SERVER},${PORT} -U ${USER} -P ${PASS} -d ${DB_NAME} -N -C"
 
 echo "→ Applying schemas..."
 $SQLCMD -i ../schema/00_schemas.sql
@@ -52,3 +50,4 @@ echo "→ Seeding sample applications..."
 $SQLCMD -i ../seed/03_sample_applications.sql
 
 echo "✅ Database rebuild complete for: $DB_NAME"
+
