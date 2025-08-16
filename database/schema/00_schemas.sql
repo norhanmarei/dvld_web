@@ -1,5 +1,3 @@
--- database/schema/00_schemas.sql
-
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = N'core')
     EXEC(N'CREATE SCHEMA core');
 GO
